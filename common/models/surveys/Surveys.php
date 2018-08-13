@@ -26,21 +26,23 @@ class Surveys extends ActiveRecord{
 			'updated_at',
 			'options',
 			'status',
-			'qText'
+			'qText',
+            'status'
 		];
 	}
 
-	public function rules(){
+	/*public function rules(){
 		return [
-			['qId','qKey','fulcrumId','country','language','options','common\validators\EmbedDocValidator','scenario' => ['create']
-			]
+			['qId','qKey','fulcrumId','country','language','options','status'
+			],
+            ['qId','required','scenario'=>['delete']]
 		];
-	}
+	}*/
 
-	public function scenarios(){
+	/*public function scenarios(){
 		 $scenarios = parent::scenarios();
 		 $scenarios['create'] = ['create'];
-	}
+	}*/
 	public function createSurveys(){
 		$this->created_at = new \MongoDate();
 		$this->updated_at = new \MongoDate();
@@ -48,7 +50,7 @@ class Surveys extends ActiveRecord{
 	}
 
 	public function updateSurveys($postdata){
-        
+        print_r($postdata); die;
         $this->updated_at = new \MongoDate();
         $this->save();
     }
@@ -69,7 +71,8 @@ class Surveys extends ActiveRecord{
         	'created_at'=>isset($this->created_at)?$this->created_at:null,
         	'updated_at'=>isset($this->updated_at)?$this->updated_at:null,
         	'options'=>isset($this->options)?$this->options:null,
-        	'qText'=>isset($this->qText)?$this->qText:null
+        	'qText'=>isset($this->qText)?$this->qText:null,
+            'status'=>isset($this->status)?$this->status:null
         ];
     }
 

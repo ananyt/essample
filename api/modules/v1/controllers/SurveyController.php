@@ -35,15 +35,15 @@ class SurveyController extends ActiveController{
 
 
     public function actionCreate(){
+        $post = Yii::$app->request->post();
     	$model = new Surveys();
-    	$post = Yii::$app->request->post();
     	$model->setAttr($post);
-    	$model->scenario = 'create';
     	if($model->validate()){
-    		echo "de";die;
     		if($model = $model->createSurveys()){
     			Yii::$app->response->statuscode = 201;
-    			return ['survey'=>$model->response];
+    			return [
+                    'survey'=>$model->response
+                ];
     		}
     		else{
     			return $model;
@@ -54,24 +54,13 @@ class SurveyController extends ActiveController{
     	}
     }
 
-    public function actionUpdate($id,$cnt,$lang){
-
-    	$qId = $id;
-    	$country = $cnt;
-    	$language = $lang;
-    	$model = Survey::findOne(['qId'=>(int)$qId,'country'=>$country,'language'=>$language,'status'=>['$ne'=>Survey::STATUS_DELETED]]);
-    	if(!empty($model)){
-    		$post = Yii::$app->request->post();
-    		if($model->validate() && $model->updateSurveys($post)){
-    			return ['surveys'=>$model->response]; 
-    		}
-    		else{
-    			return $model;
-    		}
-    	}
-    	else{
-    		return $model;
-    	}
+    public function actionUpdate(){
+        $post = Yii::$app->request->post();
+        $model = new Surveys;
+        $model->setAttr($post);
+        if($model->validate()){
+            $model->updateSurveys($model);
+        }
     }
 
     public function actionDelete($id){
@@ -79,7 +68,10 @@ class SurveyController extends ActiveController{
     	$model = Surveys::findOne(['qId'=>(int)$qId,'status'=>['$ne'=>Surveys::STATUS_DELETED]]);
     	if(!empty($model)){
     		$model->deleteSurveys();
-    		Yii:$app->response->statuscode =204;
+    		Yii::$app->response->statuscode =204;
+            return [
+                'survey deleted'
+            ];
     	}
     	else{
     		Yii::$app->response->statuscode = 404;

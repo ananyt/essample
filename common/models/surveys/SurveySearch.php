@@ -18,11 +18,11 @@ class SurveySearch extends Surveys{
 	public $updated_at;
 	public $options;
 
-	public function scenarios()
+	/*public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
-    }
+    }*/
 	public function search($params){
         $query = Surveys::find();
 
